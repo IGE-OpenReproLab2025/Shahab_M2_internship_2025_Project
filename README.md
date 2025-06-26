@@ -11,7 +11,6 @@ Understanding ERF variability is key to constraining climate sensitivity.
 4. **Publish** fully reproducible code, data-retrieval instructions, and archived outputs.
 
 ## Quick-start (reproduction instructions)
-```bash
 # 1️⃣ Clone & create env
 git clone <REPO_URL>
 cd cmip6-analysis
@@ -63,3 +62,4 @@ This repository ships everything needed to **reproduce** the CMIP6 ERF analysis:
 
 By cloning, using or contributing to this project you agree to abide by these licences.  
 If you need a different licensing arrangement, open an issue to discuss before using the material commercially.
+
