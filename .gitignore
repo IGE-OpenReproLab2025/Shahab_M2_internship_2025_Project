@@ -1,0 +1,16 @@
+# Byte-code & metadata
+__pycache__/
+*.py[cod]
+*.so
+# Jupyter
+.ipynb_checkpoints/
+# Environments
+.env
+.venv
+# OS
+.DS_Store
+Thumbs.db
+# Packaging
+dist/
+build/
+*.egg-info/
