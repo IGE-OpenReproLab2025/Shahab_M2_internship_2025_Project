@@ -1,0 +1,13 @@
+{
+  "title": "Reproducible CMIP6 Effective Radiative Forcing Analysis",
+  "creators": [
+    { "name": "<Shahab Shahlaei>", "affiliation": "<UGA>" }
+  ],
+  "description": "Archived snapshot of code, data-retrieval scripts, and notebooks that reproduce the results described in README.md.",
+  "license": "MIT",
+  "keywords": ["CMIP6", "Radiative Forcing", "Python", "Jupyter"],
+  "related_identifiers": [
+    { "identifier": "<DATASET DOI>", "relation": "isSupplementTo", "resource_type": "dataset" }
+  ],
+  "version": "0.1.0"
+}
