@@ -8,7 +8,7 @@ from nbconvert.preprocessors import ExecutePreprocessor
 # Add project root to PYTHONPATH
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-NOTEBOOK = pathlib.Path(__file__).parents[1] / "notebooks" / "CMIP6_14May.ipynb"
+NOTEBOOK = pathlib.Path(__file__).parents[1] / "notebooks" / "main.ipynb"
 
 
 def test_notebook_runs(tmp_path):

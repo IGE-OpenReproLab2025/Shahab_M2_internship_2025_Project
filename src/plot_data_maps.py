@@ -1,160 +1,121 @@
-import os
-from common_imports import *
-def plot_data_map(data, model, region, variable_name="Variable", save_dir="pic", cmap='turbo', unit='', experiment=""):
-    # Ensure data is a DataArray
-    if isinstance(data, dict):
-        raise ValueError("data should be a DataArray, not a dictionary")
+"""
+Plot helpers: colour-blind friendly, consistent styling.
+"""
 
-    # Average over time if needed
-    if "time" in data.dims:
-        data = data.mean(dim="time")
+from pathlib import Path
+from typing import Any
 
-    # Detect lat/lon
-    if 'lat' in data.dims and 'lon' in data.dims:
-        lat = data.lat.values
-        lon = data.lon.values
-    elif 'j' in data.dims and 'i' in data.dims:
-        lat = data.latitude.values
-        lon = data.longitude.values
-    else:
-        raise ValueError("Data does not have recognized lat/lon dimensions.")
-
-    # Ensure meshgrid for plotting
-    lon_grid, lat_grid = np.meshgrid(lon, lat)
-
-    # Mask invalid data
-    masked_data = np.ma.masked_invalid(data.values)
-
-    # Set projection
-    if region.lower() == "arctic":
-        projection = ccrs.NorthPolarStereo(central_longitude=0.0)
-    elif region.lower() == "antarctic":
-        projection = ccrs.SouthPolarStereo(central_longitude=0.0)
-    else:
-        projection = ccrs.PlateCarree()
-
-    fig = plt.figure(figsize=(10, 6))
-    ax = plt.axes(projection=projection)
-    if region.lower() == "global":
-        ax.set_global()
-
-    # Auto colorbar type based on data
-    if np.nanmin(masked_data) >= 0:
-        mesh = ax.pcolormesh(lon_grid, lat_grid, masked_data, cmap=cmap, shading='auto', transform=ccrs.PlateCarree())
-        cbar = plt.colorbar(mesh, ax=ax, orientation='horizontal', pad=0.07, shrink=0.5)
-    else:
-        vmax = np.nanmax(np.abs(masked_data))
-        vmin = -vmax
-        norm = mcolors.TwoSlopeNorm(vmin=vmin, vcenter=0, vmax=vmax)
-        mesh = ax.pcolormesh(lon_grid, lat_grid, masked_data, cmap=cmap, shading='auto', transform=ccrs.PlateCarree(), norm=norm)
-        cbar = plt.colorbar(mesh, ax=ax, orientation='horizontal', pad=0.07, shrink=0.5, extend='both')
-
-    cbar.set_label(f'{variable_name} ({unit})')
-
-    ax.coastlines()
-    ax.add_feature(cfeature.BORDERS, linewidth=0.5)
-
-    if region.lower() == "global":
-        ax.gridlines(draw_labels=True, linewidth=0.5, color='gray', alpha=0.5, linestyle='--')
-
-    plt.title(f"{model} - {region} - {variable_name} ({experiment})")
-    plt.tight_layout()
-    os.makedirs(save_dir, exist_ok=True)
-    filename = f"{model}_{region}_{variable_name}_{experiment}.png".replace(" ", "_")
-    plt.savefig(os.path.join(save_dir, filename), dpi=300)
-    plt.close()
+import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
+import xarray as xr
 
 
-
-def plot_all_data_maps(data_dict, variable_name="ERF", save_dir="images", experiment="", **plot_kwargs):
-    """
-    Plot maps for all models and regions in the provided data dictionary, or a single dataset.
-    """
-    if isinstance(data_dict, dict):
-        for model, experiments in data_dict.items():
-            if not experiments:
-                continue
-            # Check if experiments level exists
-            if 'control' in experiments or '2xDMS' in experiments:
-                # Nested
-                for experiment_name, regions in experiments.items():
-                    for region, data in regions.items():
-                        if data is None or (isinstance(data, xr.DataArray) and np.isnan(data).all()):
-                            print(f"⚠ Skipping {model} - {experiment_name} - {region} (empty or NaN)")
-                            continue
-                        if data.ndim < 2:
-                            print(f"⚠ Skipping {model} - {experiment_name} - {region} (Data has less than 2 dimensions)")
-                            continue
-                        print(f"Plotting data for {model} - {experiment_name} - {region}")
-                        plot_data_map(
-                            data=data,
-                            model=model,
-                            region=region,
-                            variable_name=variable_name,
-                            save_dir=save_dir,
-                            experiment=experiment_name,
-                            **plot_kwargs
-                        )
-            else:
-                # Flat
-                for region, data in experiments.items():
-                    if data is None or (isinstance(data, xr.DataArray) and np.isnan(data).all()):
-                        print(f"⚠ Skipping {model} - {region} (empty or NaN)")
-                        continue
-                    if data.ndim < 2:
-                        print(f"⚠ Skipping {model} - {region} (Data has less than 2 dimensions)")
-                        continue
-                    print(f"Plotting data for {model} - {region}")
-                    plot_data_map(
-                        data=data,
-                        model=model,
-                        region=region,
-                        variable_name=variable_name,
-                        save_dir=save_dir,
-                        experiment=experiment,
-                        **plot_kwargs
-                    )
-    elif isinstance(data_dict, xr.DataArray):
-        if np.isnan(data_dict).all():
-            print("⚠ Skipping data (All values are NaN)")
-            return
-        if data_dict.ndim < 2:
-            print("⚠ Skipping data (Data has less than 2 dimensions)")
-            return
-        plot_data_map(
-            data=data_dict,
-            model=experiment,
-            region="global",
-            variable_name=variable_name,
-            save_dir=save_dir,
-            experiment=experiment,
-            **plot_kwargs
-        )
-    else:
-        raise ValueError(f"Unexpected type for data_dict: {type(data_dict)}")
-
-
-def plot_global_map(
+# ──────────────────────────────────────────────────────────────────────
+def _plot_single(
     da: xr.DataArray,
+    *,
+    vmin: float | None,
+    vmax: float | None,
+    title: str,
+    region_name: str,
+    cmap: str,
+    save_dir: Path | None,
+) -> None:
+    """Draw a latitude profile (if no lon) or a map (Robinson / polar)."""
+
+    # build a nice label:  <var> (units)
+    units = da.attrs.get("units", "kg kg⁻¹")
+    var   = da.name or "mmrso4"
+    label = f"{var} ({units})" if units else var
+
+    # ── 1-D latitude profile ─────────────────────────────────────────
+    if "lon" not in da.dims:
+        fig, ax = plt.subplots(figsize=(9, 4.5))
+        da.squeeze().plot(ax=ax)
+        ax.set_xlabel("Latitude (°)")
+        ax.set_ylabel(label)
+        ax.set_title(title)
+        fig.tight_layout()
+        if save_dir:
+            save_dir.mkdir(parents=True, exist_ok=True)
+            fname = title.replace(" ", "_") + ".png"
+            plt.savefig(save_dir / fname, dpi=150, bbox_inches="tight")
+            plt.close(); print(f"✔ saved {fname}")
+        return
+
+    # ── 2-D lat×lon map ─────────────────────────────────────────────
+    extra = [d for d in da.dims if d not in ("lat", "lon")]
+    if extra:
+        da = da.mean(extra)
+
+    # choose projection
+    if region_name.lower().startswith("arctic"):
+        proj, extent = ccrs.NorthPolarStereo(), (-180, 180, 60, 90)
+    elif region_name.lower().startswith("antarctic"):
+        proj, extent = ccrs.SouthPolarStereo(), (-180, 180, -90, -60)
+    else:
+        proj, extent = ccrs.Robinson(), None
+
+    fig = plt.figure(figsize=(9, 4.5))
+    ax = plt.axes(projection=proj)
+    da.plot.pcolormesh(
+        ax=ax,
+        transform=ccrs.PlateCarree(),
+        vmin=vmin, vmax=vmax,
+        cmap=cmap,
+        cbar_kwargs={"label": label},
+    )
+    ax.coastlines()
+    if extent: ax.set_extent(extent, crs=ccrs.PlateCarree())
+    ax.set_title(title)
+    fig.tight_layout()
+    if save_dir:
+        save_dir.mkdir(parents=True, exist_ok=True)
+        fname = title.replace(" ", "_").replace("•", "_") + ".png"
+        plt.savefig(save_dir / fname, dpi=150, bbox_inches="tight")
+        plt.close(); print(f"✔ saved {fname}")
+
+
+# ──────────────────────────────────────────────────────────────────────
+def plot_global_map(
+    obj: Any,
     *,
     vmin: float | None = None,
     vmax: float | None = None,
     title: str = "",
     cmap: str = "cividis",
+    save_dir: str | Path | None = None,
 ) -> None:
-    """Plot a global map with a Robinson projection and a caption."""
-    fig = plt.figure(figsize=(9, 4.5))
-    ax = plt.axes(projection=ccrs.Robinson())
-    da.plot.pcolormesh(
-        ax=ax,
-        transform=ccrs.PlateCarree(),
-        vmin=vmin,
-        vmax=vmax,
-        cmap=cmap,
-        cbar_kwargs={"label": da.attrs.get("units", "")},
+    """
+    Plot every DataArray inside *obj* (nested dict or single DA).
+
+    If *save_dir* is given, PNG files are written there; otherwise plots
+    appear inline in the notebook.
+    """
+    save_path = Path(save_dir) if save_dir else None
+
+    if isinstance(obj, xr.DataArray):          # single slice
+        _plot_single(
+            obj, vmin=vmin, vmax=vmax,
+            title=title or obj.name or "map",
+            region_name=title or "Unknown",
+            cmap=cmap, save_dir=save_path,
+        )
+        return
+
+    if isinstance(obj, dict):                  # nested {model→exp→region}
+        for model, exps in obj.items():
+            for exp, regions in exps.items():
+                for region, da in regions.items():
+                    auto_title = f"{model} • {exp} • {region}"
+                    _plot_single(
+                        da, vmin=vmin, vmax=vmax,
+                        title=auto_title, region_name=region,
+                        cmap=cmap, save_dir=save_path,
+                    )
+        return
+
+    raise TypeError(
+        "plot_global_map expects an xarray.DataArray or the nested dict "
+        "produced by the analysis functions."
     )
-    ax.coastlines()
-    ax.set_title(title)
-    fig.tight_layout()
-    # Caption placeholder for notebooks
-    print(f"Caption: {title}"
