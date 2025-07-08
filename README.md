@@ -13,30 +13,30 @@ Understanding ERF variability is key to constraining climate sensitivity.
 ## Quick-start (reproduction instructions)
 
 ##   Clone the repository & create the Conda environment
-+ git clone https://github.com/IGE-OpenReproLab2025/Shahab_M2_internship_2025_Project.git
-+ cd Shahab_M2_internship_2025_Project
+ 1. git clone https://github.com/IGE-OpenReproLab2025/Shahab_M2_internship_2025_Project.git
+ 2. cd Shahab_M2_internship_2025_Project
 
 + #### (mamba is faster; conda works too)
-+ mamba env create -f environment.yml
-+ mamba activate Shahab_M2_internship
+  + mamba env create -f environment.yml
+  + mamba activate Shahab_M2_internship
 
 ##   Point the code to your NetCDF folder  ── choose one:
 
 + ### Environment variable (preferred)
-export DMS_DATA=/mnt/data-summer-shared/Sample_Data_Shahab/data/raw
+    export DMS_DATA=/mnt/data-summer-shared/Sample_Data_Shahab/data/raw
 
 + ###  Hard-code RAW in  src/load_data.py
 + ###### RAW = Path("/mnt/data-summer-shared/Sample_Data_Shahab/data/raw")
 
 ###   Launch JupyterLab and run the notebooks
-+ jupyter lab
+    + jupyter lab
 
 
 ##  Download data (~2 GB)
-python src/load_data.py --download-full  # ESGF credentials required
+    python src/load_data.py --download-full  # ESGF credentials required
 
 ##  Run the notebook
-jupyter lab notebooks/Main.ipynb
+    jupyter lab notebooks/ Main.ipynb
 
 ## Contributors
 | Role | Name | ORCID | Contribution |
@@ -45,10 +45,6 @@ jupyter lab notebooks/Main.ipynb
 | Scientific supervisor | **Prof. Jennie L. Thomas** | [0000-0002-5986-7026](https://orcid.org/0000-0002-5986-7026) | Methodology review, climate-science guidance |
 | Internship mentor | **Dr. Ruth Price** | [0000-0003-1981-9860](https://orcid.org/0000-0003-1981-9860) | Project framing, feedback on narrative |
 | IT / ESGF support | **<MikeMYKAELVIGO AurélieAlbert>** | – | Infrastructure, data-transfer troubleshooting |
-
-_Contributions follow the [all-contributors](https://allcontributors.org/) specification.  
-Open a PR to add yourself if you’ve helped!_
-
 
 ---
 
