@@ -29,7 +29,7 @@ Understanding ERF variability is key to constraining climate sensitivity.
 + ###### RAW = Path("/mnt/data-summer-shared/Sample_Data_Shahab/data/raw")
 
 ###   Launch JupyterLab and run the notebooks
-    + jupyter lab
+     jupyter lab
 
 
 ##  Download data (~2 GB)
