@@ -22,10 +22,10 @@ Understanding ERF variability is key to constraining climate sensitivity.
 
 ##   Point the code to your NetCDF folder  ── choose one:
 
-+ ### (a) Environment variable (preferred)
++ ### Environment variable (preferred)
 export DMS_DATA=/mnt/data-summer-shared/Sample_Data_Shahab/data/raw
 
-+ ### (b) Or hard-code RAW in  src/load_data.py
++ ###  hard-code RAW in  src/load_data.py
 + ###### RAW = Path("/mnt/data-summer-shared/Sample_Data_Shahab/data/raw")
 
 ###   Launch JupyterLab and run the notebooks
@@ -44,9 +44,7 @@ jupyter lab notebooks/Main.ipynb
 | Lead developer | **Shahab Shahlaei** | [0000-0003-3513-2727](https://orcid.org/0000-0003-3513-2727) | Conceptualisation, coding, data analysis, visualisation, writing |
 | Scientific supervisor | **Prof. Jennie L. Thomas** | [0000-0002-5986-7026](https://orcid.org/0000-0002-5986-7026) | Methodology review, climate-science guidance |
 | Internship mentor | **Dr. Ruth Price** | [0000-0003-1981-9860](https://orcid.org/0000-0003-1981-9860) | Project framing, feedback on narrative |
-| IT / ESGF support | **<MikeMYKAEL VIGO_ 
-Aurélie Albert
->** | – | Infrastructure, data-transfer troubleshooting |
+| IT / ESGF support | **<MikeMYKAELVIGO AurélieAlbert>** | – | Infrastructure, data-transfer troubleshooting |
 
 _Contributions follow the [all-contributors](https://allcontributors.org/) specification.  
 Open a PR to add yourself if you’ve helped!_
