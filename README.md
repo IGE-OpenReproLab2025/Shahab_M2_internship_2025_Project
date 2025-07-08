@@ -1,4 +1,4 @@
-# Reproducible CMIP6 Effective Radiative Forcing Analysis
+## Reproducible CMIP6 Effective Radiative Forcing Analysis
 
 ## Scientific context
 CMIP6 multi-model experiments provide estimates of Effective Radiative Forcing (ERF) from various anthropogenic drivers.  
@@ -12,30 +12,30 @@ Understanding ERF variability is key to constraining climate sensitivity.
 
 ## Quick-start (reproduction instructions)
 
-# 1️⃣  Clone the repository & create the Conda environment
-git clone https://github.com/IGE-OpenReproLab2025/Shahab_M2_internship_2025_Project.git
-cd Shahab_M2_internship_2025_Project
+##   Clone the repository & create the Conda environment
++ git clone https://github.com/IGE-OpenReproLab2025/Shahab_M2_internship_2025_Project.git
++ cd Shahab_M2_internship_2025_Project
 
-# (mamba is faster; conda works too)
-mamba env create -f environment.yml
-mamba activate Shahab_M2_internship
++ #### (mamba is faster; conda works too)
++ mamba env create -f environment.yml
++ mamba activate Shahab_M2_internship
 
-# 2️⃣  Point the code to your NetCDF folder  ── choose one:
+##   Point the code to your NetCDF folder  ── choose one:
 
-### (a) Environment variable (preferred)
++ ### (a) Environment variable (preferred)
 export DMS_DATA=/mnt/data-summer-shared/Sample_Data_Shahab/data/raw
 
-### (b) Or hard-code RAW in  src/load_data.py
-# RAW = Path("/mnt/data-summer-shared/Sample_Data_Shahab/data/raw")
++ ### (b) Or hard-code RAW in  src/load_data.py
++ ###### RAW = Path("/mnt/data-summer-shared/Sample_Data_Shahab/data/raw")
 
-### 3️⃣  Launch JupyterLab and run the notebooks
-jupyter lab
+###   Launch JupyterLab and run the notebooks
++ jupyter lab
 
 
-# 2️⃣ Download data (~2 GB)
+##  Download data (~2 GB)
 python src/load_data.py --download-full  # ESGF credentials required
 
-# 3️⃣ Run the notebook
+##  Run the notebook
 jupyter lab notebooks/Main.ipynb
 
 ## Contributors
