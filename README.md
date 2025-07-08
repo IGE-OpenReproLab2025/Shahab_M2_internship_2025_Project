@@ -22,13 +22,13 @@ mamba activate Shahab_M2_internship
 
 # 2️⃣  Point the code to your NetCDF folder  ── choose one:
 
-# (a) Environment variable (preferred)
+### (a) Environment variable (preferred)
 export DMS_DATA=/mnt/data-summer-shared/Sample_Data_Shahab/data/raw
 
-# (b) Or hard-code RAW in  src/load_data.py
+### (b) Or hard-code RAW in  src/load_data.py
 # RAW = Path("/mnt/data-summer-shared/Sample_Data_Shahab/data/raw")
 
-# 3️⃣  Launch JupyterLab and run the notebooks
+### 3️⃣  Launch JupyterLab and run the notebooks
 jupyter lab
 
 
