@@ -12,7 +12,6 @@ Understanding ERF variability is key to constraining climate sensitivity.
 
 ## Quick-start (reproduction instructions)
 
-```bash
 # 1️⃣  Clone the repository & create the Conda environment
 git clone https://github.com/IGE-OpenReproLab2025/Shahab_M2_internship_2025_Project.git
 cd Shahab_M2_internship_2025_Project
