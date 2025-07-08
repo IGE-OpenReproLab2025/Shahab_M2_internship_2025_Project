@@ -14,11 +14,11 @@ def calculate_mean_erf(rlut_2xdms, rsut_2xdms,
         rsut_control = rsut_control.isel(time=slice(*time_slice))
         rsdt_control = rsdt_control.isel(time=slice(*time_slice))
 
-    # ✅ Align time dimension only, and ignore spatial mismatch for now
+    #  Align time dimension only, and ignore spatial mismatch for now
     rlut_2xdms, rsut_2xdms, rsdt_2xdms = xr.align(rlut_2xdms, rsut_2xdms, rsdt_2xdms, join='inner')
     rlut_control, rsut_control, rsdt_control = xr.align(rlut_control, rsut_control, rsdt_control, join='inner')
 
-    # ✅ Broadcast control runs to 2xDMS spatial grid if needed (safe auto-match)
+    #  Broadcast control runs to 2xDMS spatial grid if needed (safe auto-match)
     rlut_control = rlut_control.broadcast_like(rlut_2xdms)
     rsut_control = rsut_control.broadcast_like(rsut_2xdms)
     rsdt_control = rsdt_control.broadcast_like(rsdt_2xdms)

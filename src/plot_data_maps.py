@@ -21,7 +21,7 @@ def _plot_single(
     cmap: str,
     save_dir: Path | None,
 ) -> None:
-    """Draw a latitude profile (if no lon) or a map (Robinson / polar)."""
+    """ latitude profile (if no lon) or a map (Robinson / polar)."""
 
     # build a nice label:  <var> (units)
     units = da.attrs.get("units", "kg kg⁻¹")

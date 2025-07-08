@@ -29,9 +29,7 @@ import xarray as xr
 # ---------------------------------------------------------------------
 # 1.  Where the raw files live
 # ---------------------------------------------------------------------
-ROOT: Final = pathlib.Path(__file__).resolve().parents[1]
-RAW = ROOT / "data" / "raw"        # put / symlink your NetCDFs here
-RAW.mkdir(parents=True, exist_ok=True)
+RAW: Final = pathlib.Path("/mnt/data-summer-shared/Sample_Data_Shahab/data/raw")
 
 # ---------------------------------------------------------------------
 # 2.  Map (variable, experiment) → filename  *EDIT these paths as needed!*

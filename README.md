@@ -11,34 +11,53 @@ Understanding ERF variability is key to constraining climate sensitivity.
 4. **Publish** fully reproducible code, data-retrieval instructions, and archived outputs.
 
 ## Quick-start (reproduction instructions)
-# 1️⃣ Clone & create env
-git clone <REPO_URL>
-cd cmip6-analysis
+
+```bash
+# 1️⃣  Clone the repository & create the Conda environment
+git clone https://github.com/IGE-OpenReproLab2025/Shahab_M2_internship_2025_Project.git
+cd Shahab_M2_internship_2025_Project
+
+# (mamba is faster; conda works too)
 mamba env create -f environment.yml
-mamba activate cmip6-analysis
+mamba activate Shahab_M2_internship
+
+# 2️⃣  Point the code to your NetCDF folder  ── choose one:
+
+# (a) Environment variable (preferred)
+export DMS_DATA=/mnt/data-summer-shared/Sample_Data_Shahab/data/raw
+
+# (b) Or hard-code RAW in  src/load_data.py
+# RAW = Path("/mnt/data-summer-shared/Sample_Data_Shahab/data/raw")
+
+# 3️⃣  Launch JupyterLab and run the notebooks
+jupyter lab
+
 
 # 2️⃣ Download data (~2 GB)
 python src/load_data.py --download-full  # ESGF credentials required
 
 # 3️⃣ Run the notebook
-jupyter lab notebooks/CMIP6_14May.ipynb
+jupyter lab notebooks/Main.ipynb
 
 ## Contributors
 | Role | Name | ORCID | Contribution |
 |------|------|-------|--------------|
-| Lead developer | **<YOUR NAME>** | <ORCID> | Conceptualisation, coding, data analysis, visualisation, writing |
-| Scientific supervisor | **<SUPERVISOR NAME>** | <ORCID> | Methodology review, climate-science guidance |
-| Internship mentor | **<MENTOR NAME>** | <ORCID> | Project framing, feedback on narrative |
-| IT / ESGF support | **<SYSADMIN NAME>** | – | Infrastructure, data-transfer troubleshooting |
+| Lead developer | **Shahab Shahlaei** | [0000-0003-3513-2727](https://orcid.org/0000-0003-3513-2727) | Conceptualisation, coding, data analysis, visualisation, writing |
+| Scientific supervisor | **Prof. Jennie L. Thomas** | [0000-0002-5986-7026](https://orcid.org/0000-0002-5986-7026) | Methodology review, climate-science guidance |
+| Internship mentor | **Dr. Ruth Price** | [0000-0003-1981-9860](https://orcid.org/0000-0003-1981-9860) | Project framing, feedback on narrative |
+| IT / ESGF support | **<MikeMYKAEL VIGO_ 
+Aurélie Albert
+>** | – | Infrastructure, data-transfer troubleshooting |
 
 _Contributions follow the [all-contributors](https://allcontributors.org/) specification.  
 Open a PR to add yourself if you’ve helped!_
+
 
 ---
 
 ## Material
 
-This repository ships everything needed to **reproduce** the CMIP6 ERF analysis:
+This repository ships everything needed to **reproduce** the CMIP6 ERF_MMSo4 analysis:
 
 1. **`notebooks/`** – executable Jupyter notebooks with clear objectives, narrative, captions and conclusions.  
 2. **`src/`** – reusable Python package (`load_cmip6`, `plot_global_map`, `compute_erf_statistics`, …) with full doc-strings.  

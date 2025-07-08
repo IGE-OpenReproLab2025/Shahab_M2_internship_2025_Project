@@ -16,7 +16,7 @@ def diagnose_model_inputs(model_data):
                         continue
 
                     da = model_dict[experiment][var]
-                    print(f"  ✅ {var} - {experiment}")
+                    print(f"   {var} - {experiment}")
                     print(f"    Time range: {da.time.values[0]} to {da.time.values[-1]}  ({len(da.time)} steps)")
                     print(f"    Lat: {da.sizes.get('lat', 'NA')}  Lon: {da.sizes.get('lon', 'NA')}")
 
@@ -31,7 +31,7 @@ def diagnose_model_inputs(model_data):
             if len(overlap) == 0:
                 print(f"  ❗ No overlapping time between '2xDMS' and 'control' runs.")
             else:
-                print(f"  ✅ Overlap length: {len(overlap)} steps ({overlap[0]} to {overlap[-1]})")
+                print(f"   Overlap length: {len(overlap)} steps ({overlap[0]} to {overlap[-1]})")
         except Exception as e:
             print(f"  ❌ Could not check time overlap: {e}")
 
@@ -40,14 +40,14 @@ def diagnose_model_inputs(model_data):
             lat_2xdms = model_dict['2xDMS']['rlut'].lat
             lat_control = model_dict['control']['rlut'].lat
             if lat_2xdms.equals(lat_control):
-                print(f"  ✅ Lat grids match.")
+                print(f"   Lat grids match.")
             else:
                 print(f"  ❗ Lat grids mismatch: {lat_2xdms.shape} vs {lat_control.shape}")
 
             lon_2xdms = model_dict['2xDMS']['rlut'].lon
             lon_control = model_dict['control']['rlut'].lon
             if lon_2xdms.equals(lon_control):
-                print(f"  ✅ Lon grids match.")
+                print(f"   Lon grids match.")
             else:
                 print(f"  ❗ Lon grids mismatch: {lon_2xdms.shape} vs {lon_control.shape}")
         except Exception as e:
