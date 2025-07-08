@@ -42,9 +42,9 @@ Understanding ERF variability is key to constraining climate sensitivity.
 | Role | Name | ORCID | Contribution |
 |------|------|-------|--------------|
 |  Developer | **Shahab Shahlaei** | [0000-0003-3513-2727](https://orcid.org/0000-0003-3513-2727) | Conceptualisation, coding, data analysis, visualisation, writing |
-| Scientific supervisor | **Prof. Jennie L. Thomas** | [0000-0002-5986-7026](https://orcid.org/0000-0002-5986-7026) | Methodology review, climate-science guidance |
+| Scientific supervisor | **Dr. Jennie L. Thomas** | [0000-0002-5986-7026](https://orcid.org/0000-0002-5986-7026) | Methodology review, climate-science guidance |
 | Internship mentor | **Dr. Ruth Price** | [0000-0003-1981-9860](https://orcid.org/0000-0003-1981-9860) | Project framing, feedback on narrative |
-| IT / ESGF support | **<MikeMYKAELVIGO AurélieAlbert>** | – | Infrastructure, data-transfer troubleshooting |
+| IT / ESGF support | **MikeMYKAELVIGO AurélieAlbert** | – | Infrastructure, data-transfer troubleshooting |
 
 ---
 
